@@ -28,25 +28,25 @@ SELECT DISTINCT persona.* FROM profesor RIGHT JOIN persona ON profesor.id_profes
 SELECT DISTINCT asignatura.* FROM profesor RIGHT JOIN asignatura ON profesor.id_profesor = asignatura.id_profesor WHERE asignatura.id_profesor IS NULL;
 -- Universidad - LEFT-RIGHT JOIN - 6
 SELECT DISTINCT departamento.* FROM departamento LEFT JOIN profesor ON departamento.id != profesor.id_departamento LEFT JOIN asignatura ON profesor.id_profesor = asignatura.id_profesor RIGHT JOIN alumno_se_matricula_asignatura AS asma ON asma.id_asignatura = asignatura.id;
--- Universidad . Consultas resumen - 1
+-- Universidad - Consultas resumen - 1
 SELECT COUNT(*) FROM persona WHERE tipo = 'alumno';
--- Universidad . Consultas resumen - 2
+-- Universidad - Consultas resumen - 2
 SELECT COUNT(*) FROM persona WHERE tipo = 'alumno' AND YEAR(fecha_nacimiento) = 1999;
--- Universidad . Consultas resumen - 3
+-- Universidad - Consultas resumen - 3
 SELECT departamento.nombre, COUNT(profesor.id_profesor) FROM departamento, profesor WHERE departamento.id = profesor.id_departamento GROUP BY departamento.nombre ORDER BY COUNT(profesor.id_profesor) DESC;
--- Universidad . Consultas resumen - 4
+-- Universidad - Consultas resumen - 4
 SELECT departamento.nombre, COUNT(profesor.id_profesor) FROM departamento LEFT JOIN profesor ON profesor.id_departamento = departamento.id GROUP BY departamento.nombre ORDER BY COUNT(profesor.id_profesor) DESC;
--- Universidad . Consultas resumen - 5
+-- Universidad - Consultas resumen - 5
 SELECT grado.nombre, COUNT(asignatura.id) FROM grado LEFT JOIN asignatura ON asignatura.id_grado = grado.id GROUP BY grado.nombre ORDER BY COUNT(asignatura.id) DESC;
--- Universidad . Consultas resumen - 6
+-- Universidad - Consultas resumen - 6
 SELECT grado.nombre, COUNT(asignatura.id) FROM grado, asignatura WHERE asignatura.id_grado = grado.id  GROUP BY grado.nombre HAVING COUNT(asignatura.id)>40;
--- Universidad . Consultas resumen - 7
+-- Universidad - Consultas resumen - 7
 SELECT grado.nombre, asignatura.tipo, COUNT(asignatura.id) FROM grado, asignatura WHERE grado.id = asignatura.id_grado GROUP BY asignatura.tipo, grado.nombre;
--- Universidad . Consultas resumen - 8
+-- Universidad - Consultas resumen - 8
 SELECT curso_escolar.anyo_inicio, COUNT(IF(persona.tipo = 'alumno', persona.id, 0)) AS alumnos_matriculados FROM persona, curso_escolar, alumno_se_matricula_asignatura AS asma WHERE persona.id = asma.id_alumno AND asma.id_curso_escolar = curso_escolar.id GROUP BY curso_escolar.anyo_inicio;
--- Universidad . Consultas resumen - 9
+-- Universidad - Consultas resumen - 9
 SELECT persona.id, persona.nombre, persona.apellido1, persona.apellido2, COUNT(asignatura.id) FROM persona LEFT JOIN profesor ON persona.id = profesor.id_profesor LEFT JOIN asignatura ON profesor.id_profesor = asignatura.id_profesor WHERE persona.tipo = 'profesor' GROUP BY persona.id, persona.nombre, persona.apellido1, persona.apellido2 ORDER BY COUNT(asignatura.id) DESC;
--- Universidad . Consultas resumen - 10
+-- Universidad - Consultas resumen - 10
 SELECT * FROM persona JOIN (SELECT MAX(fecha_nacimiento) AS fecha FROM persona WHERE tipo = 'alumno')max ON fecha_nacimiento = max.fecha WHERE tipo = 'alumno';
--- Universidad . Consultas resumen - 11
+-- Universidad - Consultas resumen - 11
 SELECT DISTINCT persona.* FROM persona JOIN profesor ON profesor.id_profesor = persona.id JOIN departamento ON profesor.id_departamento = departamento.id WHERE profesor.id_profesor NOT IN(SELECT profesor.id_profesor FROM profesor JOIN asignatura ON asignatura.id_profesor = profesor.id_profesor);
